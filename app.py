@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from dotenv import load_dotenv
+from datetime import datetime
 import os, traceback
 
 from modules.database import db, init_db, User, Note, Password
@@ -9,16 +10,13 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "OneLife-BSIT-2026-FIXED")
-# AUTO: Use Supabase on Render, SQLite on your laptop
 DATABASE_URL = os.getenv("DATABASE_URL", "")
 if DATABASE_URL.startswith("postgres"):
     app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 else:
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(os.path.abspath(os.path.dirname(__file__)), "onelife.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_ECHO"] = False  # set True to see every SQL query
 
-# INIT
 init_db(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -76,26 +74,23 @@ def api_notes():
 def api_note_save():
     try:
         d = request.get_json(force=True)
-        nid = d.get("id")
-        if nid:
-            n = Note.query.filter_by(id=nid, user_id=current_user.id).first()
-            if not n: return jsonify({"ok":0,"error":"Not found"}), 404
+        if d.get("id"):
+            n = Note.query.filter_by(id=d["id"], user_id=current_user.id).first()
+            if not n: return jsonify({"ok":0}), 404
         else:
-            n = Note(user_id=current_user.id)
-            db.session.add(n)
+            n = Note(user_id=current_user.id); db.session.add(n)
         n.title = d["title"]; n.body = d["body"]
-        db.session.commit()
-        print("✅ NOTE SAVED id=", n.id)
+        db.session.commit(); print("✅ NOTE SAVED", n.id)
         return jsonify({"ok":1,"id":n.id})
     except Exception as e:
-        print("❌ NOTE SAVE ERROR:\n", traceback.format_exc())
+        print("❌ NOTE ERR:\n", traceback.format_exc())
         return jsonify({"ok":0,"error":str(e)}), 500
 
 @app.route("/api/notes/delete/<int:nid>", methods=["POST"])
 @login_required
 def api_note_delete(nid):
     n = Note.query.filter_by(id=nid, user_id=current_user.id).first()
-    if n: db.session.delete(n); db.session.commit(); print("🗑️ Note",nid,"deleted")
+    if n: db.session.delete(n); db.session.commit()
     return jsonify({"ok":1})
 
 # ==================== API: PASSWORDS ====================
@@ -120,23 +115,57 @@ def api_pass_save():
             p = Password.query.filter_by(id=d["id"], user_id=current_user.id).first()
             if not p: return jsonify({"ok":0}), 404
         else:
-            p = Password(user_id=current_user.id)
-            db.session.add(p)
+            p = Password(user_id=current_user.id); db.session.add(p)
         p.name=d["name"]; p.username=d.get("username","")
         p.password=d["password"]; p.website=d.get("website",""); p.notes=d.get("notes","")
-        db.session.commit()
-        print("✅ PASSWORD SAVED id=", p.id)
+        db.session.commit(); print("✅ PASS SAVED", p.id)
         return jsonify({"ok":1,"id":p.id})
     except Exception as e:
-        print("❌ PASS SAVE ERROR:\n", traceback.format_exc())
+        print("❌ PASS ERR:\n", traceback.format_exc())
         return jsonify({"ok":0,"error":str(e)}), 500
 
 @app.route("/api/passwords/delete/<int:pid>", methods=["POST"])
 @login_required
 def api_pass_delete(pid):
     p = Password.query.filter_by(id=pid, user_id=current_user.id).first()
-    if p: db.session.delete(p); db.session.commit(); print("🗑️ Pass",pid,"deleted")
+    if p: db.session.delete(p); db.session.commit()
     return jsonify({"ok":1})
+
+# ==================== ✅ PRIVACY — EXPORT / DELETE — ONLY ONE COPY ====================
+@app.route("/api/export")
+@login_required
+def api_export():
+    notes = [n.to_dict() for n in Note.query.filter_by(user_id=current_user.id).all()]
+    passes = [p.to_dict() for p in Password.query.filter_by(user_id=current_user.id).all()]
+    export = {
+        "app":"OneLife","version":"1.0",
+        "user_email":current_user.email,"user_id":current_user.id,
+        "exported_at_utc":datetime.utcnow().isoformat()+"Z",
+        "encryption":"AES-256-GCM",
+        "data":{"total_items":len(notes)+len(passes),"notes":notes,"passwords":passes}
+    }
+    fn = f"onelife-export-{current_user.email.split('@')[0]}-{datetime.utcnow().strftime('%Y%m%d-%H%M%S')}.json"
+    print(f"📤 EXPORT {current_user.email} → {export['data']['total_items']} items")
+    resp = jsonify(export)
+    resp.headers["Content-Disposition"] = f"attachment; filename={fn}"
+    return resp
+
+@app.route("/api/delete-account", methods=["POST"])
+@login_required
+def api_delete_account():
+    uid = current_user.id; email = current_user.email
+    try:
+        pw_del = Password.query.filter_by(user_id=uid).delete()
+        nt_del = Note.query.filter_by(user_id=uid).delete()
+        db.session.flush()
+        User.query.filter_by(id=uid).delete()
+        db.session.commit()
+        logout_user()
+        print(f"🗑️ DELETED {email} → Notes={nt_del} Pass={pw_del} ✅ COMMITTED")
+        return jsonify({"ok":1,"deleted":{"notes":nt_del,"passwords":pw_del}})
+    except Exception as e:
+        db.session.rollback(); print("❌ DELETE ERR:",e)
+        return jsonify({"ok":0,"error":str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

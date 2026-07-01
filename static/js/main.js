@@ -27,47 +27,49 @@ function getAllMerged(){
 }
 
 // ---------- RENDER + CATEGORY + ⚡ UNIVERSAL SEARCH ----------
+// ---------- RENDER + CATEGORY + ⚡ UNIVERSAL SEARCH ----------
 function render(){
     const q = ($("#globalSearch").value || "").toLowerCase().trim();
-    let list = getAllMerged();
+    const box = $("#itemsList");
+    const emp = $("#emptyState");
+    const set = $("#settingsPanel");
 
-    // 1 — CATEGORY FILTER
-    if (activeFilter === "note") list = list.filter(i => i.type === "note");
-    if (activeFilter === "pass") list = list.filter(i => i.type === "pass");
+    // ALWAYS RESET
+    box.innerHTML = "";
+    emp.classList.add("hidden");
+    set.classList.add("hidden");
+
+    // ⚙️ SETTINGS VIEW
+    if (activeFilter === "settings") {
+        $("#sectionTitle").textContent = "⚙️ Privacy & Account";
+        $("#resultCount").textContent = "";
+        set.classList.remove("hidden");
+        return;
+    }
+
+    // FUTURE MODULES
     if (activeFilter === "id" || activeFilter === "file") {
         showComingSoon(activeFilter);
         return;
     }
 
-    // 2 — SEARCH EVERY FIELD ⚡
-    if (q) {
-        list = list.filter(i =>
-            Object.values(i).some(v =>
-                String(v || "").toLowerCase().includes(q)
-            )
-        );
-    }
+    // NORMAL DATA VIEW
+    let list = getAllMerged();
+    if (activeFilter === "note") list = list.filter(i => i.type === "note");
+    if (activeFilter === "pass") list = list.filter(i => i.type === "pass");
+    if (q) list = list.filter(i => Object.values(i).some(v => String(v||"").toLowerCase().includes(q)));
 
-    // 3 — UPDATE UI
-    const titles = {all:"All Items", note:"📄 Notes", pass:"🔑 Passwords"};
+    const titles = {all:"📝 All Items", note:"📄 Notes", pass:"🔑 Passwords"};
     $("#sectionTitle").textContent = titles[activeFilter];
-    $("#resultCount").textContent  = `${list.length} item${list.length === 1 ? "" : "s"}`;
-
-    const box = $("#itemsList");
-    const emp = $("#emptyState");
-    box.innerHTML = "";
+    $("#resultCount").textContent = `${list.length} item${list.length===1?"":"s"}`;
 
     if (list.length === 0) {
         emp.classList.remove("hidden");
         emp.innerHTML = `<div class="big-icon">🔍</div><h4>Nothing here</h4><p>Add new item or change filter.</p>`;
         return;
     }
-    emp.classList.add("hidden");
 
-    // 4 — DRAW CARDS
-    list.forEach(item => {
-        box.appendChild(item.type === "note" ? makeNoteCard(item) : makePassCard(item));
-    });
+    list.forEach(item => box.appendChild(item.type==="note" ? makeNoteCard(item) : makePassCard(item)));
 }
 
 function showComingSoon(k){
@@ -263,5 +265,75 @@ function closeEditor(){
     $("#eId").value = "";
 }
 
-// START
+// ==========================================
+// ✅ PRIVACY TOOLS — 100% WORKING VERSION
+// ==========================================
+$("#exportBtn").onclick = async () => {
+    if (!confirm("Download ALL your data as a backup file?")) return;
+    try {
+        const r = await fetch("/api/export");
+        const blob = await r.blob();
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        const cd = r.headers.get("Content-Disposition") || "";
+        a.download = cd.match(/filename="?([^"]+)"?/)?.[1] || "onelife-export.json";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+        alert("✅ EXPORTED ✅\nFile saved to Downloads.");
+    } catch (err) { alert("❌ Export failed: " + err.message); }
+};
+
+$("#delAccBtn").onclick = async () => {
+    // STEP 1 — WARNING
+    if (!confirm(
+        "⚠️ FINAL WARNING — NO UNDO ⚠️\n\n" +
+        "This will PERMANENTLY DELETE:\n" +
+        "• Your account\n" +
+        "• ALL your notes\n" +
+        "• ALL your passwords\n\n" +
+        "Everything is wiped from our database forever.\n" +
+        "We CANNOT restore anything.\n\n" +
+        "Click OK only if you are 100% sure."
+    )) return;
+
+    // STEP 2 — CONFIRMATION PHRASE
+    const phrase = "DELETE ONELIFE";
+    const typed = prompt(
+        "✅ ALMOST DONE — TYPE THIS EXACTLY TO CONFIRM:\n\n" +
+        "👉   DELETE ONELIFE   👈\n"
+    );
+    if (typed === null) return;
+    if (typed.trim() !== phrase) {
+        alert("❌ Did not match — NOTHING was deleted.");
+        return;
+    }
+
+    // STEP 3 — EXECUTE DELETE
+    try {
+        const r = await fetch("/api/delete-account", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"}
+        });
+        const d = await r.json();
+        if (!r.ok || !d.ok) throw new Error(d.error || "Server error");
+
+        // ✅ CLEAR ALL LOCAL DATA FIRST
+        DATA = { notes: [], passes: [] };
+        localStorage.clear();
+        sessionStorage.clear();
+
+        alert(
+            "✅ ACCOUNT FULLY DELETED ✅\n\n" +
+            `Removed: ${d.deleted.notes} notes + ${d.deleted.passwords} passwords\n\n` +
+            "Everything is gone forever. Taking you home..."
+        );
+
+        // ✅ FORCE FULL PAGE RELOAD TO HOME — NO CACHE REMAINS
+        window.location.replace("/");
+
+    } catch (err) {
+        alert("❌ DELETE FAILED:\n" + err.message);
+    }
+};
+
 document.addEventListener("DOMContentLoaded", loadAll);

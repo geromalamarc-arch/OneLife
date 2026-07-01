@@ -303,3 +303,26 @@ html, body { overflow-x: hidden; max-width: 100vw; }
     .vault-nav { padding: .55rem .6rem; }
     .content { padding: .6rem; }
 }
+
+/* ============== ⚙️ SETTINGS ============== */
+.set-block{
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:1rem;
+    margin-bottom:1rem;
+    background:var(--bg);
+}
+.set-block h4{margin-bottom:.25rem}
+.set-block.danger{
+    border-color:rgba(248,113,113,.4);
+    background:rgba(248,113,113,.05);
+}
+.btn.danger{
+    background:#dc2626;
+    color:#fff;
+    border-color:#dc2626;
+}
+.btn.danger:hover{
+    background:#b91c1c;
+    box-shadow:0 6px 18px rgba(220,38,38,.35);
+}

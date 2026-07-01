@@ -17,6 +17,7 @@
             <li data-filter="pass">🔑 Passwords <span class="badge" id="countPass">0</span></li>
             <li data-filter="id">🪪 IDs <span class="soon">soon</span></li>
             <li data-filter="file">🧾 Files <span class="soon">soon</span></li>
+            <li data-filter="settings">⚙️ Settings</li>
         </ul>
         <button id="addBtn" class="btn primary full" style="margin-top:1rem">+ NEW ITEM</button>
     </aside>
@@ -67,6 +68,24 @@
             <div class="big-icon">🔐</div>
             <h4>Your vault is empty</h4>
             <p>Click <b>+ NEW ITEM</b>. Everything is encrypted before saving.<br>Not even we can read it.</p>
+        </div>
+
+                <!-- ⚙️ SETTINGS PANEL -->
+        <div id="settingsPanel" class="card hidden">
+            <h3>⚙️ Privacy & Account</h3>
+            <p class="muted small">Your data. Your rules. Always.</p>
+
+            <div class="set-block">
+                <h4>📤 Export All Data</h4>
+                <p class="muted">Download <b>everything you ever saved</b> as a JSON file. Proof you truly own your data. Works offline forever.</p>
+                <button id="exportBtn" class="btn primary">⬇️ EXPORT MY DATA</button>
+            </div>
+
+            <div class="set-block danger">
+                <h4>🗑️ Permanently Delete Account</h4>
+                <p class="muted"><b>⚠️ NO UNDO.</b> Wipes your account + every note + every password instantly. We keep nothing.</p>
+                <button id="delAccBtn" class="btn danger">💥 DELETE EVERYTHING FOREVER</button>
+            </div>
         </div>
     </main>
 </section>
