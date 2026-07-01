@@ -1,12 +1,169 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="hero">
+
+<!-- NAV -->
+<nav class="land-nav">
     <div class="brand">◈ OneLife</div>
-    <h1>One private place.<br>Replaces 10 apps.</h1>
-    <p class="sub">Notes • Passwords • Files • IDs • Contacts — all encrypted, yours forever.</p>
-    <div class="cta">
-        <a href="{{ url_for('signup') }}" class="btn primary">Start Free</a>
-        <a href="{{ url_for('login') }}" class="btn ghost">Login</a>
+    <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#compare">Compare</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="{{ url_for('login') }}" class="btn ghost small">Login</a>
+        <a href="{{ url_for('signup') }}" class="btn primary small">Get Started Free</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-grid">
+        <div>
+            <div class="eyebrow">🔒 PRIVATE BY DESIGN · NO TRACKING · NO DATA MINING</div>
+            <h1>One private place.<br>Replaces <span class="grad">10 apps you pay for</span>.</h1>
+            <p class="lead">Notes · Passwords · Files · IDs · Receipts · Contacts — everything you own,
+            encrypted with <b>AES‑256</b>, searchable in <b>0.1s</b>, yours forever.
+            <br><b>80% cheaper</b> than Google · Apple · Dropbox.</p>
+            <div class="cta-row">
+                <a href="{{ url_for('signup') }}" class="btn primary big">🚀 Start Free Forever</a>
+                <a href="{{ url_for('login') }}" class="btn ghost big">Open My Vault →</a>
+            </div>
+            <div class="mini-row">
+                <span>✅ Works Everywhere</span>
+                <span>✅ 1‑Click Import/Export</span>
+                <span>✅ No Lock‑In Ever</span>
+            </div>
+        </div>
+        <div class="hero-card">
+            <div class="hc-head">◈ OneLife Vault — LIVE</div>
+            <div class="hc-search">🔎 Search anything…</div>
+            <div class="hc-items">
+                <div class="hci"><b>📄 Thesis Draft</b><span>NOTE</span></div>
+                <div class="hci"><b>🔑 Facebook</b><span>PASSWORD</span></div>
+                <div class="hci"><b>🪪 National ID</b><span>ID</span></div>
+                <div class="hci"><b>🧾 April Payslip</b><span>RECEIPT</span></div>
+            </div>
+            <div class="hc-foot">🔐 All data encrypted — we see nothing</div>
+        </div>
     </div>
 </section>
+
+<!-- PROBLEM -->
+<section class="section" id="problem">
+    <h2 class="center">Your digital life is <span class="red">scattered & locked</span>.</h2>
+    <p class="sub center">Everyone has this problem. Right now yours lives in 6+ places, controlled by 4+ companies.</p>
+    <div class="grid-3">
+        <div class="card prob"><div class="ic">📂</div><h3>Split everywhere</h3><p>Notes in Keep · Files in Drive · Passwords in browser · Receipts in email. You never find it fast.</p></div>
+        <div class="card prob"><div class="ic">👁️</div><h3>They read your data</h3><p>Big tech scans everything you store to build ad profiles. Your private life is their product.</p></div>
+        <div class="card prob"><div class="ic">💸</div><h3>Paying 6× too much</h3><p>$5 here, $10 there — easily <b>$40–$60/year</b> for tools that should be one app.</p></div>
+    </div>
+    <div class="vs">
+        <div class="vs-bad">❌ OLD WAY: 10 apps · 5 logins · $12/mo · they own you</div>
+        <div class="vs-arrow">⬇️</div>
+        <div class="vs-good">✅ ONELIFE: 1 app · 1 login · <b>$1.99/mo UNLIMITED</b> · <u>you own everything</u></div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section alt" id="features">
+    <h2 class="center">Only <span class="grad">4 things</span>. Done perfectly.</h2>
+    <p class="sub center">We don't do 100 useless features. We do exactly what you need — nothing more, nothing less.</p>
+    <div class="grid-2">
+        <div class="card feat"><div class="fic">🔐</div><h3>Unified Private Vault</h3><p>One place for <b>everything</b>: notes, passwords, files, photos, IDs, receipts, contacts. <b>AES‑256 military encryption</b> — only YOU hold the key. Not us, not any government.</p></div>
+        <div class="card feat"><div class="fic">⚡</div><h3>Universal Search</h3><p>Type <b>one word</b> → finds it instantly across <u>every single thing</u> you ever saved. This feature alone is worth the price. <b>0.1 second results.</b></p></div>
+        <div class="card feat"><div class="fic">🌍</div><h3>Works EVERYWHERE</h3><p>Web · Android · iOS · Windows · Mac · Linux. <b>No lock‑in.</b> Import/export your entire life in 1 click. Leave anytime — we won't stop you.</p></div>
+        <div class="card feat"><div class="fic">💎</div><h3>Radically Fair Price</h3><p><b>Free forever</b> for essentials. <b>$1.99/mo or $19/yr = UNLIMITED EVERYTHING</b>. 80% cheaper than Google One · iCloud · 1Password · Dropbox.</p></div>
+    </div>
+</section>
+
+<!-- 3 SUPERPOWERS -->
+<section class="section">
+    <h2 class="center">3 things <span class="red">giants will NEVER copy</span>.</h2>
+    <p class="sub center">This is how a student from Cebu beats trillion‑dollar companies.</p>
+    <div class="grid-3">
+        <div class="card sp"><h3>🔒 Privacy First</h3><p>They <b>make money</b> by scanning your data. We <b>win</b> by promising: <u>we will never look at it</u>. Our business model is incompatible with theirs.</p></div>
+        <div class="card sp"><h3>💸 80% Cheaper</h3><p>Their cloud & executive costs are huge. Ours are tiny. <b>$1.99/mo is profitable for us at 1,000 users</b> — impossible for them to match.</p></div>
+        <div class="card sp"><h3>🧩 Truly Open</h3><p>Apple & Google <b>want you locked</b> to one brand. OneLife runs on anything. Freedom is our feature — their prison.</p></div>
+    </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="section alt" id="compare">
+    <h2 class="center">OneLife vs <span class="grad">Everyone Else</span></h2>
+    <p class="sub center">One app replaces them all — and wins on every single thing that matters.</p>
+    <div class="table-wrap">
+    <table class="compare">
+        <thead><tr><th></th><th class="win">◈ OneLife</th><th>Google One</th><th>iCloud</th><th>1Password</th><th>Notion</th><th>Dropbox</th></tr></thead>
+        <tbody>
+            <tr><td>🔒 Your data is private</td><td class="win">✅ ALWAYS</td><td>❌ Scans for ads</td><td>❌ Scans</td><td>✅</td><td>❌ Reads</td><td>❌ Scans</td></tr>
+            <tr><td>🔐 AES‑256 Encryption</td><td class="win">✅</td><td>⚠️ Partial</td><td>⚠️ Partial</td><td>✅</td><td>❌ No</td><td>⚠️</td></tr>
+            <tr><td>📝 Notes</td><td class="win">✅</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>❌</td></tr>
+            <tr><td>🔑 Password Manager</td><td class="win">✅</td><td>⚠️ Basic</td><td>⚠️ Basic</td><td>✅</td><td>❌</td><td>❌</td></tr>
+            <tr><td>⚡ Universal Search</td><td class="win">✅ ALL</td><td>❌ Slow</td><td>❌ Bad</td><td>✅ Only pass</td><td>✅</td><td>❌</td></tr>
+            <tr><td>📱 Works on EVERY OS</td><td class="win">✅ 5/5</td><td>⚠️ 4/5</td><td>❌ 2/5</td><td>✅ 5/5</td><td>✅ 5/5</td><td>✅ 5/5</td></tr>
+            <tr><td>🚫 No Ads / No Tracking</td><td class="win">✅</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>❌</td></tr>
+            <tr><td>💰 Monthly Price</td><td class="win"><b>$1.99</b></td><td>$2.99</td><td>$2.99</td><td>$3.99</td><td>$8.00</td><td>$11.99</td></tr>
+            <tr><td>💵 Yearly Price</td><td class="win"><b>$19</b></td><td>$30</td><td>$36</td><td>$48</td><td>$96</td><td>$120</td></tr>
+            <tr><td>🆓 Free Tier</td><td class="win">✅ Forever</td><td>✅ 15GB</td><td>✅ 5GB</td><td>⚠️ 14d</td><td>⚠️ Limits</td><td>⚠️ 2GB</td></tr>
+        </tbody>
+    </table>
+    </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+    <h2 class="center">Simple pricing. <span class="grad">No tricks.</span></h2>
+    <p class="sub center">Pay only when you need more. Cancel anytime — no fine print.</p>
+    <div class="grid-3 price">
+        <div class="card pcard">
+            <h3>🆓 Free</h3>
+            <div class="price-tag">$0<span>/forever</span></div>
+            <ul><li>✅ 50 Notes</li><li>✅ 20 Passwords</li><li>✅ Universal Search</li><li>✅ AES‑256</li><li>✅ All platforms</li></ul>
+            <a href="{{ url_for('signup') }}" class="btn ghost full">Start Free</a>
+        </div>
+        <div class="card pcard featured">
+            <div class="ribbon">⭐ MOST POPULAR</div>
+            <h3>💎 Unlimited</h3>
+            <div class="price-tag">$1.99<span>/mo</span> <b>or $19/yr</b></div>
+            <ul><li>✅ UNLIMITED EVERYTHING</li><li>✅ Notes + Passwords</li><li>✅ Future: Files · IDs · Contacts</li><li>✅ Priority speed</li><li>✅ <b>80% cheaper than rivals</b></li></ul>
+            <a href="{{ url_for('signup') }}" class="btn primary full">Go Unlimited →</a>
+        </div>
+        <div class="card pcard">
+            <h3>👨‍👩‍👧 Family</h3>
+            <div class="price-tag">$4.99<span>/mo</span></div>
+            <ul><li>✅ 5 Private Vaults</li><li>✅ Each fully encrypted</li><li>✅ Shared folder option</li><li>✅ All features</li><li>✅ Coming Q4 2026</li></ul>
+            <a href="#" class="btn ghost full">Notify Me</a>
+        </div>
+    </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="section alt" id="roadmap">
+    <h2 class="center">Built by a <span class="grad">BSIT Student</span> — exact study path</h2>
+    <p class="sub center">Every feature uses standard tech you will learn anyway. No magic — just clean code.</p>
+    <div class="road">
+        <div class="r done"><b>✅ DONE: MVP v1.0</b><p>Python Flask · Auth · Notes · Passwords · AES‑256 · Search · Live Deploy</p></div>
+        <div class="r wip"><b>🔨 NOW: v1.1</b><p>Landing page · Better UI · Export data · Mobile responsive</p></div>
+        <div class="r"><b>📅 v1.2 — Yr1 Sem2</b><p>Files / Photos · Receipts / IDs · MySQL upgrade</p></div>
+        <div class="r"><b>📅 v1.3 — Yr2</b><p>Contacts · Bookmarks · Health logs · Subscriptions</p></div>
+        <div class="r"><b>📅 v2.0 — Yr3</b><p>Android + iOS apps · Desktop apps · Full sync engine</p></div>
+        <div class="r"><b>🌍 FUTURE</b><p>1,000 users → 10,000 → global default private hub</p></div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+    <h2>Stop paying more for less.<br><span class="grad">Own your digital life.</span></h2>
+    <a href="{{ url_for('signup') }}" class="btn primary big">🚀 Create Free Account — 10s</a>
+    <p class="tiny">No card · No spam · Your data = your property</p>
+</section>
+
+<footer>
+    <div class="foot">
+        <div><b class="brand">◈ OneLife</b><p>Your private, all‑in‑one digital life hub — built in Cebu 🇵🇭</p></div>
+        <div><b>Product</b><p><a href="#features">Features</a><br><a href="#compare">Compare</a><br><a href="#pricing">Pricing</a></p></div>
+        <div><b>Tech</b><p>Python · Flask · PostgreSQL<br>AES‑256 · Open by design</p></div>
+        <div><b>© 2026 OneLife</b><p>Privacy · Simplicity · Fairness</p></div>
+    </div>
+</footer>
+
 {% endblock %}
