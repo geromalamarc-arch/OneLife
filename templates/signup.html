@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="auth">
+    <h2>◈ Create Account</h2>
+    <form method="POST">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Create Password" required>
+        <button class="btn primary full" type="submit">Make My Vault</button>
+    </form>
+    <a href="{{ url_for('login') }}">← Login instead</a>
+</section>
+{% endblock %}

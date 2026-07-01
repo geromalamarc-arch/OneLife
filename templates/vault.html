@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<nav class="vault-nav">
+    <div class="brand">◈ OneLife Vault</div>
+    <div class="nav-user">{{ email }} · 🔒 AES‑256</div>
+    <a href="{{ url_for('logout') }}" class="btn ghost small">Logout</a>
+</nav>
+
+<section class="vault">
+    <aside class="sidebar">
+        <div class="search">
+            <input type="text" id="globalSearch" placeholder="🔎 UNIVERSAL SEARCH — notes + passwords...">
+        </div>
+        <ul class="menu">
+            <li class="active" data-filter="all">📝 All Items <span class="badge" id="countAll">0</span></li>
+            <li data-filter="note">📄 Notes <span class="badge" id="countNote">0</span></li>
+            <li data-filter="pass">🔑 Passwords <span class="badge" id="countPass">0</span></li>
+            <li data-filter="id">🪪 IDs <span class="soon">soon</span></li>
+            <li data-filter="file">🧾 Files <span class="soon">soon</span></li>
+        </ul>
+        <button id="addBtn" class="btn primary full" style="margin-top:1rem">+ NEW ITEM</button>
+    </aside>
+
+    <main class="content">
+        <div class="content-head">
+            <h3 id="sectionTitle">All Items</h3>
+            <span class="muted small" id="resultCount">0 items</span>
+        </div>
+
+        <!-- EDITOR — WORKS FOR BOTH NOTE + PASSWORD -->
+        <div id="editor" class="card hidden">
+            <div class="tabs">
+                <button class="tab active" data-form="note">📄 Note</button>
+                <button class="tab" data-form="pass">🔑 Password</button>
+            </div>
+
+            <!-- NOTE FORM -->
+            <div id="formNote" class="form-pane">
+                <input id="nTitle" type="text" placeholder="Title...">
+                <textarea id="nBody" rows="8" placeholder="Encrypted note..."></textarea>
+            </div>
+
+            <!-- PASSWORD FORM -->
+            <div id="formPass" class="form-pane hidden">
+                <input id="pName"     type="text" placeholder="* Name (e.g. Facebook)">
+                <input id="pUser"     type="text" placeholder="Username / Email">
+                <div class="row">
+                    <input id="pPass" type="password" placeholder="* Password">
+                    <button type="button" class="btn ghost small" id="togglePass">👁️</button>
+                    <button type="button" class="btn ghost small" id="genPass">🎲 Generate</button>
+                </div>
+                <input id="pSite" type="url"  placeholder="Website URL (optional)">
+                <textarea id="pNote" rows="3" placeholder="Extra notes (optional)"></textarea>
+            </div>
+
+            <div class="editor-actions">
+                <button class="btn ghost small" id="cancelBtn">Cancel</button>
+                <button class="btn primary small" id="saveBtn">💾 SAVE ENCRYPTED</button>
+            </div>
+            <input type="hidden" id="eId" value="">
+            <input type="hidden" id="eType" value="note">
+        </div>
+
+        <!-- ITEMS -->
+        <div id="itemsList" class="items"></div>
+        <div id="emptyState" class="empty-state">
+            <div class="big-icon">🔐</div>
+            <h4>Your vault is empty</h4>
+            <p>Click <b>+ NEW ITEM</b>. Everything is encrypted before saving.<br>Not even we can read it.</p>
+        </div>
+    </main>
+</section>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

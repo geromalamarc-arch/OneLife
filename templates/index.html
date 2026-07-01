@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+    <div class="brand">◈ OneLife</div>
+    <h1>One private place.<br>Replaces 10 apps.</h1>
+    <p class="sub">Notes • Passwords • Files • IDs • Contacts — all encrypted, yours forever.</p>
+    <div class="cta">
+        <a href="{{ url_for('signup') }}" class="btn primary">Start Free</a>
+        <a href="{{ url_for('login') }}" class="btn ghost">Login</a>
+    </div>
+</section>
+{% endblock %}
