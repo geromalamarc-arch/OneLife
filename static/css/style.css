@@ -184,3 +184,122 @@ footer{background:#070d0f;border-top:1px solid var(--border);padding:2.5rem 2rem
     .nav-links a:not(.btn){display:none}
     .pcard.featured{transform:none}
 }
+
+/* ============================================
+   ✅ ONELIFE — FULLY RESPONSIVE VAULT
+   📱 Phone → 📟 Tablet → 💻 PC — ALL PERFECT
+   🔒 NO ZOOM / NO OVERFLOW / NO BREAKING
+   ============================================ */
+
+/* --- GLOBAL: NEVER let anything be wider than screen --- */
+* { -webkit-tap-highlight-color: transparent; }
+html, body { overflow-x: hidden; max-width: 100vw; }
+
+/* --- VAULT NAV --- */
+.vault-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .75rem 1rem;
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+.nav-user {
+    font-size: .75rem;
+    word-break: break-all;
+    text-align: right;
+    flex: 1;
+}
+
+/* --- DEFAULT: DESKTOP / LAPTOP ≥900px --- */
+.vault {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: calc(100vh - 56px);
+}
+.sidebar {
+    height: calc(100vh - 56px);
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+}
+
+/* --- TABLET 640px — 899px --- */
+@media (max-width: 899px) {
+    .vault { grid-template-columns: 230px 1fr; }
+    .content { padding: 1rem; }
+    h3 { font-size: 1.15rem; }
+    .btn { padding: .6rem .9rem; font-size: .95rem; }
+}
+
+/* --- 📱 ALL PHONES <640px — FULL REARRANGE --- */
+@media (max-width: 639px) {
+    /* ✅ SIDEBAR GOES TO TOP — FULL WIDTH */
+    .vault {
+        grid-template-columns: 1fr !important;
+        min-height: auto;
+    }
+    .sidebar {
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: .75rem;
+    }
+    .content { padding: .85rem; }
+
+    /* ✅ MENU BECOMES HORIZONTAL SCROLL TABS — NO WRAP */
+    .menu {
+        display: flex;
+        gap: .35rem;
+        overflow-x: auto;
+        padding-bottom: .25rem;
+        scrollbar-width: none;
+    }
+    .menu::-webkit-scrollbar { display: none; }
+    .menu li {
+        flex: 0 0 auto;
+        font-size: .82rem;
+        padding: .45rem .6rem;
+        border-left: none !important;
+        border-bottom: 2px solid transparent;
+        white-space: nowrap;
+    }
+    .menu li.active {
+        background: rgba(6,182,212,.12);
+        border-left: none !important;
+        border-bottom: 2px solid var(--accent);
+    }
+    .badge { float: none; margin-left: .3rem; }
+    #addBtn { margin-top: .5rem !important; }
+
+    /* ✅ EDITOR FULL WIDTH — BIGGER TAP AREAS */
+    .row { flex-wrap: wrap; }
+    .row input { min-width: 0; }
+    .card { padding: .8rem; }
+    input, textarea, button { font-size: 16px !important; } /* ⭐ PREVENTS IOS AUTO-ZOOM ON FOCUS */
+    .tabs { flex-wrap: wrap; }
+    .tab { flex: 1; padding: .55rem; }
+
+    /* ✅ ITEM CARDS */
+    .item-head { align-items: flex-start; gap: .3rem; }
+    .item-head b { font-size: .95rem; }
+    .item-body { font-size: .88rem; }
+    .pass-row { flex-wrap: wrap; gap: .3rem; }
+    .pass-dot { font-size: .85rem; }
+
+    /* ✅ HERO / LANDING TWEAKS */
+    section.section { padding: 3rem 1rem; }
+    .hero { padding: 2rem 1rem 3rem; }
+    .btn.big { width: 100%; text-align: center; }
+    .cta-row { flex-direction: column; }
+    .mini-row { justify-content: center; }
+}
+
+/* --- VERY SMALL PHONES <380px --- */
+@media (max-width: 379px) {
+    .brand { font-size: 1rem; }
+    h3 { font-size: 1rem; }
+    .vault-nav { padding: .55rem .6rem; }
+    .content { padding: .6rem; }
+}
